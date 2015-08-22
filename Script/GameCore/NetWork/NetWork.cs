@@ -83,7 +83,7 @@ namespace GameCore.NetWork
             {
                 if (id == m_currentConnectedSID)
                 {
-                    GlobalUtil.Log("NetTCPWork::Connect already connect the server ID = " + id);
+                    Debug.Log("NetTCPWork::Connect already connect the server ID = " + id);
                     return;
                 }
 
@@ -120,7 +120,7 @@ namespace GameCore.NetWork
             {
                 if (null != c)
                 {
-                    GlobalUtil.Log("CNetTCPWork::Disconnect Remove ID = " + id);
+                    Debug.Log("CNetTCPWork::Disconnect Remove ID = " + id);
                     c.DisConnection();
                     m_TCPConnects[id] = null;
                     if (id == m_currentConnectedSID)
@@ -198,7 +198,7 @@ namespace GameCore.NetWork
                     return true;
                 }
             }
-            GlobalUtil.Log("CNetWork::SendMessage false id = " + id);
+            Debug.Log("CNetWork::SendMessage false id = " + id);
             return false;
         }
         //-------------------------------------------------------------------------

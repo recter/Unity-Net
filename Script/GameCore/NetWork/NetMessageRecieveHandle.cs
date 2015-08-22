@@ -115,7 +115,7 @@ namespace GameCore.NetWork
             }
             else
             {
-                GlobalUtil.Log("UnRegisterMessageHandler have no del by command:" + command);
+                Debug.Log("UnRegisterMessageHandler have no del by command:" + command);
             }
         }
         //-------------------------------------------------------------------------

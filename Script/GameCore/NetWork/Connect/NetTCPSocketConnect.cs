@@ -131,11 +131,11 @@ namespace GameCore.NetWork
                     m_IPAddrMsg.m_IsNeedCallDisConnect = true;
                     m_Socket.Shutdown(SocketShutdown.Both);
                     m_Socket.Close();
-                    GlobalUtil.Log("NetTCPSocketConnect::DisConnection - close socket");
+                    Debug.Log("NetTCPSocketConnect::DisConnection - close socket");
                 }
                 catch (System.Exception excep)
                 {
-                    GlobalUtil.LogError("NetTCPSocketConnect::DisConnection - closet socket eror:" + excep.ToString());
+                    Debug.LogError("NetTCPSocketConnect::DisConnection - closet socket eror:" + excep.ToString());
                 }
             }
 
@@ -174,7 +174,7 @@ namespace GameCore.NetWork
 
             if (0 == ip.Length || ip.Equals(SNetCommon.NULL) || 0 >= portnumber)
             {
-                GlobalUtil.Log("NetTCPSocketConnect::Connect arge is error");
+                Debug.Log("NetTCPSocketConnect::Connect arge is error");
                 return false;
             }
             m_nSocketID = nSocketID;
@@ -192,13 +192,13 @@ namespace GameCore.NetWork
             }
             catch (System.Exception excep)
             {
-                GlobalUtil.Log("NetTCPSocketConnect::Connect DNS Error:" + excep.ToString());
+                Debug.Log("NetTCPSocketConnect::Connect DNS Error:" + excep.ToString());
                 return false;
             }
 
             if (addresses == null || addresses.Length == 0)
             {
-                GlobalUtil.Log("NetTCPSocketConnect::Connect addresses:" + addresses.ToString());
+                Debug.Log("NetTCPSocketConnect::Connect addresses:" + addresses.ToString());
                 return false;
 
             }
@@ -215,7 +215,7 @@ namespace GameCore.NetWork
 
             try
             {
-                GlobalUtil.Log("NetTCPSocketConnect::Connect begin connect to server:" + ip + " port:" + portnumber.ToString());
+                Debug.Log("NetTCPSocketConnect::Connect begin connect to server:" + ip + " port:" + portnumber.ToString());
                 m_IPAddrMsg.m_IsConnect = false;
 
                 /* 
@@ -239,12 +239,12 @@ namespace GameCore.NetWork
                 if (errorCode != SocketError.Success)
                 {
                     //throw new SocketException((Int32)errorCode);
-                    GlobalUtil.Log("NetTCPSocketConnect::Connect check the net SocketError = " + errorCode);
+                    Debug.Log("NetTCPSocketConnect::Connect check the net SocketError = " + errorCode);
                 }
             }
             catch (System.Exception e)
             {
-                GlobalUtil.Log("NetTCPSocketConnect::Connect " + e.ToString());
+                Debug.Log("NetTCPSocketConnect::Connect " + e.ToString());
                 return false;
             }
 
@@ -277,7 +277,7 @@ namespace GameCore.NetWork
                     m_ManualSendEvent.Set();
                 }
                 
-                GlobalUtil.Log("CNetTCPSocketConnect::SendMessage m_SendPackList.Count = " + m_SendPackList.Count);
+                Debug.Log("CNetTCPSocketConnect::SendMessage m_SendPackList.Count = " + m_SendPackList.Count);
             }
 
             return true;
@@ -439,7 +439,7 @@ namespace GameCore.NetWork
             m_AutoConnectEvent.Set();
             if (e.SocketError == SocketError.Success)
             {
-                GlobalUtil.Log("NetTCPSocketConnect::__OnConnectComplete handle socket conect to server success");
+                Debug.Log("NetTCPSocketConnect::__OnConnectComplete handle socket conect to server success");
 
                 m_IPAddrMsg.m_IsConnect = true;
                 __CreateNetWorkThread();
@@ -448,7 +448,7 @@ namespace GameCore.NetWork
             }
             else
             {
-                GlobalUtil.LogError("NetTCPSocketConnect::__OnConnectComplete handle socket conect to server Failed");
+                Debug.LogError("NetTCPSocketConnect::__OnConnectComplete handle socket conect to server Failed");
 
                 m_IPAddrMsg.m_IsConnect = false;
                 m_IPAddrMsg.m_IsNeedCallConnected = false;
@@ -523,13 +523,13 @@ namespace GameCore.NetWork
 
             while (null != m_Socket && false == m_IPAddrMsg.m_IsNeedClose)
             {
-                GlobalUtil.Log("NetTCPSocketConnect::__RectiveThreadFunc at while");
+                Debug.Log("NetTCPSocketConnect::__RectiveThreadFunc at while");
                 bool b = false;
                 b = __ReadPacketHead();
                 if (false == b)
                 {
 
-                    GlobalUtil.LogError("NetTCPSocketConnect::__RectiveThreadFunc read packhead error will close connect");
+                    Debug.LogError("NetTCPSocketConnect::__RectiveThreadFunc read packhead error will close connect");
                     m_IPAddrMsg.m_IsNeedClose = true;
                     break;
                 }
@@ -538,7 +538,7 @@ namespace GameCore.NetWork
                 if (false == b)
                 {
 
-                    GlobalUtil.LogError("NetTCPSocketConnect::__RectiveThreadFunc read packbody error will close connect");
+                    Debug.LogError("NetTCPSocketConnect::__RectiveThreadFunc read packbody error will close connect");
                     m_IPAddrMsg.m_IsNeedClose = true;
                     break;
                 }
@@ -554,7 +554,7 @@ namespace GameCore.NetWork
             
             if (null == m_Socket || false == m_Socket.Connected)
             {
-                GlobalUtil.Log("NetTCPSocketConnect::__ReadPacketHead socket is null or connecd = false ");
+                Debug.Log("NetTCPSocketConnect::__ReadPacketHead socket is null or connecd = false ");
                 return false;
             }
 
@@ -564,7 +564,7 @@ namespace GameCore.NetWork
                 int receiveSize = m_Socket.Receive(m_ReceiveHead, SNetPacketCommon.PACK_HEAD_SIZE, SocketFlags.None);
                 if (receiveSize == 0)
                 {
-                    GlobalUtil.Log("NetTCPSocketConnect::__ReadPacketHead read pack head 0 data ,will close connect");
+                    Debug.Log("NetTCPSocketConnect::__ReadPacketHead read pack head 0 data ,will close connect");
                     return false;
                 }
 
@@ -572,14 +572,14 @@ namespace GameCore.NetWork
                 {
                     if (m_Socket == null || m_Socket.Connected == false)
                     {
-                        GlobalUtil.Log("NetTCPSocketConnect::__ReadPacketHead socket is null or connecd = false ");
+                        Debug.Log("NetTCPSocketConnect::__ReadPacketHead socket is null or connecd = false ");
                         return false;
                     }
                     
                     int nTemsendcount = m_Socket.Receive(m_ReceiveHead, receiveSize, SNetPacketCommon.PACK_HEAD_SIZE - receiveSize, SocketFlags.None);
                     if (0 == nTemsendcount)
                     {
-                        GlobalUtil.Log("NetTCPSocketConnect::__ReadPacketHead read pack receive 0 data,will close connect");
+                        Debug.Log("NetTCPSocketConnect::__ReadPacketHead read pack receive 0 data,will close connect");
                         return false;
                     }
 
@@ -590,7 +590,7 @@ namespace GameCore.NetWork
 
                 if (false == SocketNetPacket.IsPackHead(m_ReceiveHead))
                 {
-                    GlobalUtil.Log("NetTCPSocketConnect::__ReadPacketHead receive data is not packhead");
+                    Debug.Log("NetTCPSocketConnect::__ReadPacketHead receive data is not packhead");
                     return false;
                 }
 
@@ -600,7 +600,7 @@ namespace GameCore.NetWork
 
             catch (System.Exception e)
             {
-                GlobalUtil.LogError("NetTCPSocketConnect::__ReadPacketHead Socket  receive error: " + e.ToString());
+                Debug.LogError("NetTCPSocketConnect::__ReadPacketHead Socket  receive error: " + e.ToString());
                 return false;
             }
 
@@ -615,7 +615,7 @@ namespace GameCore.NetWork
             
             if (m_ReceiveHead == null)
             {
-                GlobalUtil.LogError("NetTCPSocketConnect::__ReadPacketBody m_ReceiveHead is null");
+                Debug.LogError("NetTCPSocketConnect::__ReadPacketBody m_ReceiveHead is null");
                 return false;
             }
 
@@ -626,7 +626,7 @@ namespace GameCore.NetWork
             Int32 bodysize = buffersize - SNetPacketCommon.PACK_HEAD_SIZE;
             if (bodysize <= 0)
             {
-                GlobalUtil.Log("NetTCPSocketConnect::__ReadPacketBody receive empty pack message id:" + messageid);
+                Debug.Log("NetTCPSocketConnect::__ReadPacketBody receive empty pack message id:" + messageid);
                 return true;
             }
 
@@ -634,7 +634,7 @@ namespace GameCore.NetWork
             ///设置包头数据
             if (false == netPacket.SetPackHead(m_ReceiveHead))
             {
-                GlobalUtil.Log("NetTCPSocketConnect::__ReadPacketBody receive headis error");
+                Debug.Log("NetTCPSocketConnect::__ReadPacketBody receive headis error");
                 return false;
             }
 
@@ -645,14 +645,14 @@ namespace GameCore.NetWork
             {
                 if (null == m_Socket || false == m_Socket.Connected)
                 {
-                    GlobalUtil.Log("NetTCPSocketConnect::__ReadPacketBody m_Socket==null|| m_Socket.Connected==fales ");
+                    Debug.Log("NetTCPSocketConnect::__ReadPacketBody m_Socket==null|| m_Socket.Connected==fales ");
                     return false;
                 }
 
                 Int32 receiveSize = m_Socket.Receive(packBuffer, SNetPacketCommon.PACK_HEAD_SIZE, bodysize, SocketFlags.None);
                 if (receiveSize == 0)
                 {
-                    GlobalUtil.Log("NetTCPSocketConnect::__ReadPacketBody readPackBody read 0 data will close  connect");
+                    Debug.Log("NetTCPSocketConnect::__ReadPacketBody readPackBody read 0 data will close  connect");
                     return false;
                 }
                 // 当要接受的数据超过包的大小时，将消息截断，再接收
@@ -660,7 +660,7 @@ namespace GameCore.NetWork
                 {
                     if (null == m_Socket || false == m_Socket.Connected)
                     {
-                        GlobalUtil.Log("NetTCPSocketConnect::__ReadPacketBody m_Socket==null|| m_Socket.Connected==falsewww eeee");
+                        Debug.Log("NetTCPSocketConnect::__ReadPacketBody m_Socket==null|| m_Socket.Connected==falsewww eeee");
                         return false;
                     }
 
@@ -669,7 +669,7 @@ namespace GameCore.NetWork
 
                     if (temsendcount == 0)
                     {
-                        GlobalUtil.Log("NetTCPSocketConnect::__ReadPacketBody readPackBody read 0 data will close  connect");
+                        Debug.Log("NetTCPSocketConnect::__ReadPacketBody readPackBody read 0 data will close  connect");
                         return false;
                     }
 
@@ -681,7 +681,7 @@ namespace GameCore.NetWork
                 // lock is begin in here
                 lock (m_ReceiveObject)
                 {
-                    GlobalUtil.Log("NetTCPSocketConnect::__ReadPacketBody Recv Full Data Len = " + nBufferSize);
+                    Debug.Log("NetTCPSocketConnect::__ReadPacketBody Recv Full Data Len = " + nBufferSize);
                     m_ReceivePackList.AddLast(netPacket);
                 }
                 // unlock is done in here
@@ -691,7 +691,7 @@ namespace GameCore.NetWork
             }
             catch (System.Exception e)
             {
-                GlobalUtil.LogError("NetTCPSocketConnect::__ReadPacketBody  Socket  receive error: " + e.ToString());
+                Debug.LogError("NetTCPSocketConnect::__ReadPacketBody  Socket  receive error: " + e.ToString());
                 DisConnection();
                 return false;
             }
@@ -727,7 +727,7 @@ namespace GameCore.NetWork
                         int sendsize = m_Socket.Send(sendBuffer, 0, nBufferSize, SocketFlags.None);
                         if (sendsize != nBufferSize)
                         {
-                            GlobalUtil.LogError("NetTCPSocketConnect::__SendThreadFunc send buffer size error:");
+                            Debug.LogError("NetTCPSocketConnect::__SendThreadFunc send buffer size error:");
                             m_IPAddrMsg.m_IsNeedClose = true;
                             break;
                         }
@@ -737,7 +737,7 @@ namespace GameCore.NetWork
                     }
                     catch (System.Exception exception)
                     {
-                        GlobalUtil.LogError("NetTCPSocketConnect::__SendThreadFunc send buffer size error:" + exception.ToString());
+                        Debug.LogError("NetTCPSocketConnect::__SendThreadFunc send buffer size error:" + exception.ToString());
                         m_IPAddrMsg.m_IsNeedClose = true;
                         break;
                     }
@@ -751,11 +751,11 @@ namespace GameCore.NetWork
 
             if (null == m_Socket)
             {
-                GlobalUtil.Log("NetTCPSocketConnect::__SendThreadFunc m_Socket is null");
+                Debug.Log("NetTCPSocketConnect::__SendThreadFunc m_Socket is null");
             }
-            GlobalUtil.Log("NetTCPSocketConnect::__SendThreadFunc m_IPAddrMsg.m_IsNeedClose = " + m_IPAddrMsg.m_IsNeedClose);
-            GlobalUtil.Log("NetTCPSocketConnect::__SendThreadFunc m_IPAddrMsg.m_IsConnect = " + m_IPAddrMsg.m_IsConnect);
-            GlobalUtil.Log("NetTCPSocketConnect::__SendThreadFunc send message thread is exit...");
+            Debug.Log("NetTCPSocketConnect::__SendThreadFunc m_IPAddrMsg.m_IsNeedClose = " + m_IPAddrMsg.m_IsNeedClose);
+            Debug.Log("NetTCPSocketConnect::__SendThreadFunc m_IPAddrMsg.m_IsConnect = " + m_IPAddrMsg.m_IsConnect);
+            Debug.Log("NetTCPSocketConnect::__SendThreadFunc send message thread is exit...");
         }
         //-------------------------------------------------------------------------
         #endregion

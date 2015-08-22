@@ -76,7 +76,7 @@ namespace GameCore.NetWork
         {
             if (null == m_Buffer)
             {
-                GlobalUtil.Log("SocketNetPacket::GetBuffer error m_Buffer is null");
+                Debug.Log("SocketNetPacket::GetBuffer error m_Buffer is null");
                 nBufferSize = 0;
                 return null;
             }
@@ -95,7 +95,7 @@ namespace GameCore.NetWork
         {
             if (null == m_Buffer || m_Buffer.Length <= SNetPacketCommon.PACK_HEAD_SIZE)
             {
-                GlobalUtil.Log("SocketNetPacket::GetBody error  m_buffer == null or  buffer.Length <= PACK_HEAD_SIZE");
+                Debug.Log("SocketNetPacket::GetBody error  m_buffer == null or  buffer.Length <= PACK_HEAD_SIZE");
                 nBodySize = 0;
                 return null;
             }
@@ -116,13 +116,13 @@ namespace GameCore.NetWork
         {
             if (null == headData || headData.Length != SNetPacketCommon.PACK_HEAD_SIZE)
             {
-                GlobalUtil.Log("SocketNetPacket::SetPackHead error  headData.Length = " + headData.Length);
+                Debug.Log("SocketNetPacket::SetPackHead error  headData.Length = " + headData.Length);
                 return false;
             }
 
             if (null == m_Buffer || m_Buffer.Length < SNetPacketCommon.PACK_HEAD_SIZE)
             {
-                GlobalUtil.Log("SocketNetPacket::SetPackHead error  m_Buffer.Length = " + m_Buffer.Length);
+                Debug.Log("SocketNetPacket::SetPackHead error  m_Buffer.Length = " + m_Buffer.Length);
                 return false;
             }
 
@@ -183,7 +183,7 @@ namespace GameCore.NetWork
 
             if (data.Length != SNetPacketCommon.PACK_HEAD_SIZE)
             {
-                GlobalUtil.LogError("SocketNetPacket::IsPackHead pack head lenght error:" + data.Length);
+                Debug.LogError("SocketNetPacket::IsPackHead pack head lenght error:" + data.Length);
                 return false;
             }
 
@@ -193,10 +193,10 @@ namespace GameCore.NetWork
                 )
             {
                 Int16 n16MessageID = BitConverter.ToInt16(data, SNetPacketCommon.PACK_MESSSAGEID_OFFSET);
-                GlobalUtil.LogError("SocketNetPacket::IsPackHead pack head  head version is error: messge id:" + n16MessageID);
+                Debug.LogError("SocketNetPacket::IsPackHead pack head  head version is error: messge id:" + n16MessageID);
 
                 string buffer = BitConverter.ToString(data, 0);
-                GlobalUtil.LogError("SocketNetPacket::IsPackHead packhead buffer:" + buffer);
+                Debug.LogError("SocketNetPacket::IsPackHead packhead buffer:" + buffer);
 
                 return false;
             }
